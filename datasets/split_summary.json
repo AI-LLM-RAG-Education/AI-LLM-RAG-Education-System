@@ -1,0 +1,22 @@
+{
+  "seed": 42,
+  "total": 400,
+  "development": 320,
+  "test": 80,
+  "development_by_route": {
+    "BOTH": 64,
+    "NOT-FOUND": 48,
+    "OUT-OF-SCOPE": 48,
+    "RAG": 80,
+    "SQL": 80
+  },
+  "test_by_route": {
+    "BOTH": 16,
+    "NOT-FOUND": 12,
+    "OUT-OF-SCOPE": 12,
+    "RAG": 20,
+    "SQL": 20
+  },
+  "test_subtypes_covered": 55,
+  "total_subtypes": 61
+}
