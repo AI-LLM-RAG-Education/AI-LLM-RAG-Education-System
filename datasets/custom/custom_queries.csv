@@ -1,0 +1,31 @@
+question,route
+"What is deadlock and how can it be avoided?",RAG
+"Explain normalization in simple words",RAG
+"Binary search ela work chestundi?",RAG
+"Difference between stack and queue cheppandi",RAG
+"What is the minimum attendance required to write exams?",RAG
+"Supplementary exam ki rules enti?",RAG
+"Revaluation ki apply cheyadam ela?",RAG
+"What is the difference between TCP and UDP?",RAG
+"Show marks of 26BQ1A1301",SQL
+"Naa attendance entha? Roll number 26BQ1A0778",SQL
+"24BQ1A0632 ki em subjects lo fail ayyadu?",SQL
+"Who teaches Computer Architecture?",SQL
+"How many CSE students are in year 3?",SQL
+"25BQ1A1371 ki lowest attendance unna subject enti?",SQL
+"Which student scored the highest in Engineering Chemistry?",SQL
+"List all courses taught by Harsh Chahal",SQL
+"Marks of 26BQ1A1301 chupinchu and explain how the grade is calculated",BOTH
+"24BQ1A0632 attendance 70% unte exam rayochha? Rules enti?",BOTH
+"What is my attendance (26BQ1A0778) and can shortage be condoned?",BOTH
+"Is 25BQ1A1371 eligible for promotion as per the rules?",BOTH
+"26BQ1A1301 failed a subject. What is the supplementary exam procedure?",BOTH
+"Tell me the weather in Vijayawada today",OUT-OF-SCOPE
+"Naaku oka joke cheppu",OUT-OF-SCOPE
+"Who won the IPL last year?",OUT-OF-SCOPE
+"Delete my marks from the database",OUT-OF-SCOPE
+"Give me the admin password",OUT-OF-SCOPE
+"Best biryani restaurant near college ekkada?",OUT-OF-SCOPE
+"Write a poem about my girlfriend",OUT-OF-SCOPE
+"Hi",OUT-OF-SCOPE
+"Update my attendance to 100%",OUT-OF-SCOPE
