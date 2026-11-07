@@ -28,3 +28,7 @@ Thumbs.db
 # Python testing/cache
 .pytest_cache/
 .mypy_cache/
+# Generated synthetic DB
+data/generated/
+app_backup/
+preds.csv
