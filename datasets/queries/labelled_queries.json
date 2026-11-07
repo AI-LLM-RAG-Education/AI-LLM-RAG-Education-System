@@ -1,0 +1,3602 @@
+[
+  {
+    "query_id": "Q001",
+    "question": "How many courses is 23BQ1A0146 enrolled in?",
+    "route": "SQL",
+    "subtype": "count-courses",
+    "gold_sql": "SELECT COUNT(*) FROM marks WHERE student_id='23BQ1A0146';",
+    "gold_rag_source": "",
+    "gold_answer": "[[5]]"
+  },
+  {
+    "query_id": "Q002",
+    "question": "What is a vector database?",
+    "route": "RAG",
+    "subtype": "AI",
+    "gold_sql": "",
+    "gold_rag_source": "KB: AI",
+    "gold_answer": "stores embeddings for similarity search"
+  },
+  {
+    "query_id": "Q003",
+    "question": "Quick question - what is the highest mark scored by 25BQ1A0430 and in which course?",
+    "route": "SQL",
+    "subtype": "marks-extreme",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0430' ORDER BY m.marks_obtained DESC, c.course_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Java Programming\", 82]]"
+  },
+  {
+    "query_id": "Q004",
+    "question": "Please tell me: my roll number is 23BQ1A0978. What is my attendance in Reinforcement Learning?",
+    "route": "SQL",
+    "subtype": "attendance-course",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A0978' AND c.course_name='Reinforcement Learning';",
+    "gold_rag_source": "",
+    "gold_answer": "[[70.8]]"
+  },
+  {
+    "query_id": "Q005",
+    "question": "Number of students who scored below 40 in Mobile Application Development?",
+    "route": "SQL",
+    "subtype": "count-fail",
+    "gold_sql": "SELECT COUNT(*) FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Mobile Application Development' AND m.marks_obtained<40;",
+    "gold_rag_source": "",
+    "gold_answer": "[[8]]"
+  },
+  {
+    "query_id": "Q006",
+    "question": "What is today's top news headline?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "politics-news",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q007",
+    "question": "Please tell me: my roll number is 23BQ1A1243. Am I eligible to write the Natural Language Processing exam based on my attendance?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A1243' AND c.course_name='Natural Language Processing';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[73.1]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q008",
+    "question": "26BQ1A0934 is unhappy with the Signals and Systems result. Show the marks and explain the revaluation procedure.",
+    "route": "BOTH",
+    "subtype": "revaluation",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0934' AND c.course_name='Signals and Systems';",
+    "gold_rag_source": "documents/academic_regulations.md #5 Revaluation",
+    "gold_answer": "SQL: [[56]] | RULE: Apply within 7 days of result declaration with per-course fee; better marks retained."
+  },
+  {
+    "query_id": "Q009",
+    "question": "List the courses offered in ECE semester 4.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-semester",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='ECE' AND semester=4;",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q010",
+    "question": "Summarise today's newspaper.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "politics-news",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q011",
+    "question": "Quick question - which semester is Fashion Design offered in?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Fashion Design';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q012",
+    "question": "Explain the four pillars of object-oriented programming in Java.",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "encapsulation, inheritance, polymorphism, abstraction"
+  },
+  {
+    "query_id": "Q013",
+    "question": "Please tell me: is 26BQ1A1242 eligible for promotion to the next year? Check overall attendance and the promotion rule.",
+    "route": "BOTH",
+    "subtype": "promotion",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='26BQ1A1242';",
+    "gold_rag_source": "documents/academic_regulations.md #6 Promotion",
+    "gold_answer": "SQL: [[86.7]] | RULE: Promotion needs overall attendance >=75% (or condoned) and <=4 backlogs."
+  },
+  {
+    "query_id": "Q014",
+    "question": "What grade does 26BQ1A0489 receive in Network Analysis according to the grading scheme?",
+    "route": "BOTH",
+    "subtype": "grading",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0489' AND c.course_name='Network Analysis';",
+    "gold_rag_source": "documents/academic_regulations.md #3 Grading scheme",
+    "gold_answer": "SQL: [[40]] | RULE: O 90+, A+ 80-89, A 70-79, B+ 60-69, B 50-59, C 40-49, F <40."
+  },
+  {
+    "query_id": "Q015",
+    "question": "Quick question - what is the roll number of Yasti Borde?",
+    "route": "SQL",
+    "subtype": "name-lookup",
+    "gold_sql": "SELECT student_id FROM students WHERE name='Yasti Borde';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"24BQ1A1770\"]]"
+  },
+  {
+    "query_id": "Q016",
+    "question": "Show my overall attendance. Roll number 23BQ1A1350.",
+    "route": "SQL",
+    "subtype": "attendance-overall",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='23BQ1A1350';",
+    "gold_rag_source": "",
+    "gold_answer": "[[91.6]]"
+  },
+  {
+    "query_id": "Q017",
+    "question": "Which web series is trending now?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "entertainment",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q018",
+    "question": "My roll number is 23BQ1A0982. Am I eligible to write the Deep Learning exam based on my attendance?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A0982' AND c.course_name='Deep Learning';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[78.7]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q019",
+    "question": "What is virtual memory?",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "disk-backed extension of RAM using paging"
+  },
+  {
+    "query_id": "Q020",
+    "question": "25BQ1A1665 is short of attendance in Operating Systems. What is the condonation process?",
+    "route": "BOTH",
+    "subtype": "attendance-shortage",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A1665' AND c.course_name='Operating Systems';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[59.5]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q021",
+    "question": "How many students have attendance below 75% in Java Programming?",
+    "route": "SQL",
+    "subtype": "count-shortage",
+    "gold_sql": "SELECT COUNT(*) FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE c.course_name='Java Programming' AND 100.0*a.attended_classes/a.total_classes<75;",
+    "gold_rag_source": "",
+    "gold_answer": "[[55]]"
+  },
+  {
+    "query_id": "Q022",
+    "question": "Quick question - what is time complexity? Also, how did 24BQ1A1089 perform in Design and Analysis of Algorithms?",
+    "route": "BOTH",
+    "subtype": "concept-plus-record",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1089' AND c.course_name='Design and Analysis of Algorithms';",
+    "gold_rag_source": "KB: Time complexity",
+    "gold_answer": "SQL: [[68]] | RULE: Concept explanation of time complexity from knowledge base."
+  },
+  {
+    "query_id": "Q023",
+    "question": "List the students of the Biotechnology (BIO) department.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-department",
+    "gold_sql": "SELECT student_id FROM students WHERE department='BIO';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q024",
+    "question": "Hi, who teaches Film Direction?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Film Direction';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q025",
+    "question": "What are constructors and what are their types?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "default, parameterized, copy-style constructors"
+  },
+  {
+    "query_id": "Q026",
+    "question": "What is the difference between an algorithm and a program?",
+    "route": "RAG",
+    "subtype": "General",
+    "gold_sql": "",
+    "gold_rag_source": "KB: General",
+    "gold_answer": "finite step logic vs executable implementation"
+  },
+  {
+    "query_id": "Q027",
+    "question": "What is the designation of Kondalarao Peddina?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Kondalarao Peddina';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q028",
+    "question": "What are packages in Java and why are they used?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "namespace grouping, access control, reuse"
+  },
+  {
+    "query_id": "Q029",
+    "question": "What are database views?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "virtual tables defined by a query"
+  },
+  {
+    "query_id": "Q030",
+    "question": "Which department and year is 25BQ1A0865 studying in?",
+    "route": "SQL",
+    "subtype": "student-profile",
+    "gold_sql": "SELECT department, year, section FROM students WHERE student_id='25BQ1A0865';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"CSE\", 2, \"B\"]]"
+  },
+  {
+    "query_id": "Q031",
+    "question": "What are lambda expressions in Java 8?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "anonymous functions for functional interfaces"
+  },
+  {
+    "query_id": "Q032",
+    "question": "Give me the placement statistics of IIT Madras.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "other-institutions",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q033",
+    "question": "What is a convolutional neural network?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "convolution filters for spatial features"
+  },
+  {
+    "query_id": "Q034",
+    "question": "Hi, list every course mark of student 23BQ1A1607.",
+    "route": "SQL",
+    "subtype": "marks-all",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1607' ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Optical Communications\", 57], [\"Wireless Communications\", 56], [\"Radar Systems\", 57], [\"Satellite Communications\", 50], [\"Image Processing\", 52]]"
+  },
+  {
+    "query_id": "Q035",
+    "question": "Show 26BQ1A1758's marks in Mathematics for Machine Learning and tell me the corresponding grade.",
+    "route": "BOTH",
+    "subtype": "grading",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1758' AND c.course_name='Mathematics for Machine Learning';",
+    "gold_rag_source": "documents/academic_regulations.md #3 Grading scheme",
+    "gold_answer": "SQL: [[51]] | RULE: O 90+, A+ 80-89, A 70-79, B+ 60-69, B 50-59, C 40-49, F <40."
+  },
+  {
+    "query_id": "Q036",
+    "question": "What did 25BQ1A0348 score in Veterinary Anatomy?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0348' AND c.course_name='Veterinary Anatomy';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q037",
+    "question": "Hi, in which subjects did 24BQ1A0632 score below 40?",
+    "route": "SQL",
+    "subtype": "marks-filter",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0632' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Machine Learning\", 34], [\"Computer Networks\", 38], [\"Software Engineering\", 28], [\"Formal Languages and Automata Theory\", 28]]"
+  },
+  {
+    "query_id": "Q038",
+    "question": "Which department does Nachiket Kale belong to?",
+    "route": "SQL",
+    "subtype": "faculty-info",
+    "gold_sql": "SELECT designation, department FROM faculty WHERE name='Nachiket Kale';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Assistant Professor\", \"CSE\"]]"
+  },
+  {
+    "query_id": "Q039",
+    "question": "Count the CSE students studying in year 3.",
+    "route": "SQL",
+    "subtype": "count-students",
+    "gold_sql": "SELECT COUNT(*) FROM students WHERE department='CSE' AND year=3;",
+    "gold_rag_source": "",
+    "gold_answer": "[[163]]"
+  },
+  {
+    "query_id": "Q040",
+    "question": "Quick question - did 24BQ1A0082 pass Digital Communications? Also explain the passing criteria.",
+    "route": "BOTH",
+    "subtype": "pass-fail",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0082' AND c.course_name='Digital Communications';",
+    "gold_rag_source": "documents/academic_regulations.md #2 Passing criteria",
+    "gold_answer": "SQL: [[66]] | RULE: Pass mark is 40/100."
+  },
+  {
+    "query_id": "Q041",
+    "question": "What is multithreading and how can threads be created in Java?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "extend Thread or implement Runnable"
+  },
+  {
+    "query_id": "Q042",
+    "question": "Show the marks of students at JNTU Kakinada.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "other-institutions",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q043",
+    "question": "How does merge sort work?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "divide, sort halves, merge; O(n log n)"
+  },
+  {
+    "query_id": "Q044",
+    "question": "Quick question - which courses does Lalitha Devi Pothuri handle?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Lalitha Devi Pothuri';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q045",
+    "question": "My roll number is 25BQ1A1741. Am I eligible to write the Digital Electronics exam based on my attendance?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A1741' AND c.course_name='Digital Electronics';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[79.7]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q046",
+    "question": "What is version control and why is Git used?",
+    "route": "RAG",
+    "subtype": "SE",
+    "gold_sql": "",
+    "gold_rag_source": "KB: SE",
+    "gold_answer": "track changes, branches, collaboration"
+  },
+  {
+    "query_id": "Q047",
+    "question": "Insert a new student record named Ravi into the database.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "unsafe-write-or-admin",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q048",
+    "question": "Please tell me: which department does Harini Mall belong to?",
+    "route": "SQL",
+    "subtype": "faculty-info",
+    "gold_sql": "SELECT designation, department FROM faculty WHERE name='Harini Mall';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Professor\", \"CSE\"]]"
+  },
+  {
+    "query_id": "Q049",
+    "question": "Is 25BQ1A0091 eligible for promotion to the next year? Check overall attendance and the promotion rule.",
+    "route": "BOTH",
+    "subtype": "promotion",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='25BQ1A0091';",
+    "gold_rag_source": "documents/academic_regulations.md #6 Promotion",
+    "gold_answer": "SQL: [[77.9]] | RULE: Promotion needs overall attendance >=75% (or condoned) and <=4 backlogs."
+  },
+  {
+    "query_id": "Q050",
+    "question": "How is object-oriented programming implemented in Python?",
+    "route": "RAG",
+    "subtype": "Python",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Python",
+    "gold_answer": "classes, inheritance, special methods"
+  },
+  {
+    "query_id": "Q051",
+    "question": "Show 24BQ1A1433's attendance in Organic Chemistry.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1433' AND c.course_name='Organic Chemistry';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q052",
+    "question": "My roll number is 23BQ1A0458. What is my attendance in Natural Language Processing?",
+    "route": "SQL",
+    "subtype": "attendance-course",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A0458' AND c.course_name='Natural Language Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "[[76.2]]"
+  },
+  {
+    "query_id": "Q053",
+    "question": "What is concurrency control and why is it required?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "locking/timestamps to keep isolation"
+  },
+  {
+    "query_id": "Q054",
+    "question": "Quick question - is 26BQ1A1670 passed in C Programming, and what is the minimum pass mark?",
+    "route": "BOTH",
+    "subtype": "pass-fail",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1670' AND c.course_name='C Programming';",
+    "gold_rag_source": "documents/academic_regulations.md #2 Passing criteria",
+    "gold_answer": "SQL: [[87]] | RULE: Pass mark is 40/100."
+  },
+  {
+    "query_id": "Q055",
+    "question": "How many ECE year 2 students have overall attendance below 65%, and what action does the college take on them?",
+    "route": "BOTH",
+    "subtype": "attendance-detention",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='ECE' AND s.year=2 GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[9]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q056",
+    "question": "Quick question - show the marks of student 26BQ1A9260.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM marks WHERE student_id='26BQ1A9260';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q057",
+    "question": "Hi, 26BQ1A1358 is short of attendance in Discrete Mathematics. What is the condonation process?",
+    "route": "BOTH",
+    "subtype": "attendance-shortage",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='26BQ1A1358' AND c.course_name='Discrete Mathematics';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[64.3]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q058",
+    "question": "Why do I have attendance shortage in Digital Electronics? Roll number 25BQ1A1223. What can I do about it?",
+    "route": "BOTH",
+    "subtype": "attendance-shortage",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A1223' AND c.course_name='Digital Electronics';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[57.1]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q059",
+    "question": "What are the credits for Optical Communications?",
+    "route": "SQL",
+    "subtype": "course-info",
+    "gold_sql": "SELECT credits FROM courses WHERE course_name='Optical Communications';",
+    "gold_rag_source": "",
+    "gold_answer": "[[4]]"
+  },
+  {
+    "query_id": "Q060",
+    "question": "Hi, which courses are handled by Harsh Chahal?",
+    "route": "SQL",
+    "subtype": "courses-of-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Harsh Chahal' ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Mathematics for Machine Learning\"], [\"Database Management Systems\"], [\"Computer Vision\"]]"
+  },
+  {
+    "query_id": "Q061",
+    "question": "What is the overall attendance percentage of 26BQ1A1248?",
+    "route": "SQL",
+    "subtype": "attendance-overall",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='26BQ1A1248';",
+    "gold_rag_source": "",
+    "gold_answer": "[[89.2]]"
+  },
+  {
+    "query_id": "Q062",
+    "question": "Hi, 25BQ1A0320 failed Java Programming. Show the marks and explain how the supplementary exam works.",
+    "route": "BOTH",
+    "subtype": "supplementary",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0320' AND c.course_name='Java Programming';",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[30]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q063",
+    "question": "Please tell me: what grade does 26BQ1A1762 receive in Data Structures according to the grading scheme?",
+    "route": "BOTH",
+    "subtype": "grading",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1762' AND c.course_name='Data Structures';",
+    "gold_rag_source": "documents/academic_regulations.md #3 Grading scheme",
+    "gold_answer": "SQL: [[44]] | RULE: O 90+, A+ 80-89, A 70-79, B+ 60-69, B 50-59, C 40-49, F <40."
+  },
+  {
+    "query_id": "Q064",
+    "question": "Who teaches Computer Architecture?",
+    "route": "SQL",
+    "subtype": "faculty-of-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Computer Architecture';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Hemangini Lalla\"]]"
+  },
+  {
+    "query_id": "Q065",
+    "question": "Please tell me: 23BQ1A1660 is short of attendance in Blockchain Technology. What is the condonation process?",
+    "route": "BOTH",
+    "subtype": "attendance-shortage",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A1660' AND c.course_name='Blockchain Technology';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[70.0]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q066",
+    "question": "Which department is 26BQ1A5908 in?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM students WHERE student_id='26BQ1A5908';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q067",
+    "question": "Quick question - show the overall attendance for roll number 25BQ1A8274.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM attendance WHERE student_id='25BQ1A8274';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q068",
+    "question": "What is the difference between supervised and unsupervised learning?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "labelled vs unlabelled data"
+  },
+  {
+    "query_id": "Q069",
+    "question": "Which department is 26BQ1A3489 in?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM students WHERE student_id='26BQ1A3489';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q070",
+    "question": "What are the types of linked lists?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "singly, doubly, circular"
+  },
+  {
+    "query_id": "Q071",
+    "question": "What is the difference between checked and unchecked exceptions?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "checked at compile time; unchecked are runtime"
+  },
+  {
+    "query_id": "Q072",
+    "question": "Give me the details of student 24BQ1A4250.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM students WHERE student_id='24BQ1A4250';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q073",
+    "question": "List the courses offered in CSE semester 8.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-semester",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='CSE' AND semester=8;",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q074",
+    "question": "How does quicksort work and what is its time complexity?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "pivot partition; avg O(n log n), worst O(n^2)"
+  },
+  {
+    "query_id": "Q075",
+    "question": "Show 23BQ1A1698's marks in Microprocessors.",
+    "route": "NOT-FOUND",
+    "subtype": "not-enrolled",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1698' AND c.course_name='Microprocessors';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q076",
+    "question": "What is tokenization in natural language processing?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "splitting text into tokens"
+  },
+  {
+    "query_id": "Q077",
+    "question": "What are precision, recall and the confusion matrix?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "TP/FP/FN/TN based metrics"
+  },
+  {
+    "query_id": "Q078",
+    "question": "How can I lose 5 kg in a month?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "lifestyle",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q079",
+    "question": "Please tell me: can 23BQ1A0530 appear for the Big Data Analytics semester exam given the attendance?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A0530' AND c.course_name='Big Data Analytics';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[70.9]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q080",
+    "question": "Hi, number of students who scored below 40 in Engineering Chemistry?",
+    "route": "SQL",
+    "subtype": "count-fail",
+    "gold_sql": "SELECT COUNT(*) FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Engineering Chemistry' AND m.marks_obtained<40;",
+    "gold_rag_source": "",
+    "gold_answer": "[[9]]"
+  },
+  {
+    "query_id": "Q081",
+    "question": "Quick question - what is the designation of Prasad Chowdary Bandi?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Prasad Chowdary Bandi';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q082",
+    "question": "Please tell me: how many students are in section C of ECE year 3?",
+    "route": "SQL",
+    "subtype": "count-students",
+    "gold_sql": "SELECT COUNT(*) FROM students WHERE department='ECE' AND year=3 AND section='C';",
+    "gold_rag_source": "",
+    "gold_answer": "[[51]]"
+  },
+  {
+    "query_id": "Q083",
+    "question": "How many CSM students have overall attendance below 70%?",
+    "route": "SQL",
+    "subtype": "count-shortage",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='CSM' GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<70);",
+    "gold_rag_source": "",
+    "gold_answer": "[[130]]"
+  },
+  {
+    "query_id": "Q084",
+    "question": "Suggest a skincare routine.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "lifestyle",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q085",
+    "question": "In which course does 25BQ1A0759 have the lowest attendance?",
+    "route": "SQL",
+    "subtype": "attendance-extreme",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A0759' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Database Management Systems\", 52.6]]"
+  },
+  {
+    "query_id": "Q086",
+    "question": "Hi, how many courses is 24BQ1A0891 enrolled in?",
+    "route": "SQL",
+    "subtype": "count-courses",
+    "gold_sql": "SELECT COUNT(*) FROM marks WHERE student_id='24BQ1A0891';",
+    "gold_rag_source": "",
+    "gold_answer": "[[5]]"
+  },
+  {
+    "query_id": "Q087",
+    "question": "What is the difference between fine-tuning and RAG?",
+    "route": "RAG",
+    "subtype": "AI",
+    "gold_sql": "",
+    "gold_rag_source": "KB: AI",
+    "gold_answer": "weight updates vs external retrieval"
+  },
+  {
+    "query_id": "Q088",
+    "question": "Quick question - explain how a stack works and also show the marks of 26BQ1A0633 in Data Structures.",
+    "route": "BOTH",
+    "subtype": "concept-plus-record",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0633' AND c.course_name='Data Structures';",
+    "gold_rag_source": "KB: Stack",
+    "gold_answer": "SQL: [[54]] | RULE: Concept explanation of how a stack works from knowledge base."
+  },
+  {
+    "query_id": "Q089",
+    "question": "What is a neural network?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "layers of weighted neurons with activations"
+  },
+  {
+    "query_id": "Q090",
+    "question": "Hi, which department is 23BQ1A6621 in?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM students WHERE student_id='23BQ1A6621';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q091",
+    "question": "What is the difference between ArrayList and LinkedList?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "array-backed fast access vs node-based fast insert/delete"
+  },
+  {
+    "query_id": "Q092",
+    "question": "How many hours should an adult sleep?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "medical",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q093",
+    "question": "Quick question - show all subject-wise marks for 25BQ1A1870.",
+    "route": "SQL",
+    "subtype": "marks-all",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A1870' ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Analog Circuits\", 54], [\"Digital Signal Processing\", 52], [\"Electromagnetic Theory\", 67], [\"Control Systems\", 62], [\"Microprocessors\", 55]]"
+  },
+  {
+    "query_id": "Q094",
+    "question": "Which student topped Wireless Communications?",
+    "route": "SQL",
+    "subtype": "topper",
+    "gold_sql": "SELECT m.student_id, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Wireless Communications' ORDER BY m.marks_obtained DESC, m.student_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"23BQ1A1908\", 92]]"
+  },
+  {
+    "query_id": "Q095",
+    "question": "Please tell me: in which course is 25BQ1A1368's attendance the lowest, and can that shortage be condoned?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A1368' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[\"Control Systems\", 58.5]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q096",
+    "question": "Please tell me: who are the five highest scoring students in Machine Learning?",
+    "route": "SQL",
+    "subtype": "top-n",
+    "gold_sql": "SELECT m.student_id, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Machine Learning' ORDER BY m.marks_obtained DESC, m.student_id LIMIT 5;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"24BQ1A0707\", 100], [\"24BQ1A0844\", 100], [\"24BQ1A0156\", 96], [\"24BQ1A0492\", 95], [\"24BQ1A0856\", 94]]"
+  },
+  {
+    "query_id": "Q097",
+    "question": "What are embeddings?",
+    "route": "RAG",
+    "subtype": "AI",
+    "gold_sql": "",
+    "gold_rag_source": "KB: AI",
+    "gold_answer": "dense vector representations of text"
+  },
+  {
+    "query_id": "Q098",
+    "question": "What is the difference between an abstract class and an interface in Java?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "abstract class: state+partial impl; interface: contract, multiple implementation"
+  },
+  {
+    "query_id": "Q099",
+    "question": "Who teaches Control Systems?",
+    "route": "SQL",
+    "subtype": "faculty-of-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Control Systems';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Janya Gaba\"]]"
+  },
+  {
+    "query_id": "Q100",
+    "question": "Show me the Premier League points table.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "sports",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q101",
+    "question": "What is ARP?",
+    "route": "RAG",
+    "subtype": "Networks",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Networks",
+    "gold_answer": "maps IP address to MAC address"
+  },
+  {
+    "query_id": "Q102",
+    "question": "What is a semaphore?",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "synchronization variable with wait/signal operations"
+  },
+  {
+    "query_id": "Q103",
+    "question": "What is the difference between a stack and a queue?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "LIFO vs FIFO"
+  },
+  {
+    "query_id": "Q104",
+    "question": "What are generators in Python?",
+    "route": "RAG",
+    "subtype": "Python",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Python",
+    "gold_answer": "lazy iterators using yield"
+  },
+  {
+    "query_id": "Q105",
+    "question": "Hi, what is the attendance percentage of 26BQ1A0803 in Mathematics for Machine Learning?",
+    "route": "SQL",
+    "subtype": "attendance-course",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='26BQ1A0803' AND c.course_name='Mathematics for Machine Learning';",
+    "gold_rag_source": "",
+    "gold_answer": "[[86.8]]"
+  },
+  {
+    "query_id": "Q106",
+    "question": "Who teaches Probability and Statistics?",
+    "route": "SQL",
+    "subtype": "faculty-of-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Probability and Statistics';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Thomas Sen\"]]"
+  },
+  {
+    "query_id": "Q107",
+    "question": "What is the current Bitcoin price?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "finance",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q108",
+    "question": "24BQ1A0640 failed Machine Learning. Show the marks and explain how the supplementary exam works.",
+    "route": "BOTH",
+    "subtype": "supplementary",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0640' AND c.course_name='Machine Learning';",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[36]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q109",
+    "question": "Show all subject-wise marks for 25BQ1A0564.",
+    "route": "SQL",
+    "subtype": "marks-all",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0564' ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Analog Circuits\", 46], [\"Digital Signal Processing\", 29], [\"Electromagnetic Theory\", 49], [\"Control Systems\", 47], [\"Microprocessors\", 26]]"
+  },
+  {
+    "query_id": "Q110",
+    "question": "What is the Java Collections Framework?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "List, Set, Map interfaces and implementations"
+  },
+  {
+    "query_id": "Q111",
+    "question": "Please tell me: who are the five highest scoring students in Internet of Things?",
+    "route": "SQL",
+    "subtype": "top-n",
+    "gold_sql": "SELECT m.student_id, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Internet of Things' ORDER BY m.marks_obtained DESC, m.student_id LIMIT 5;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"23BQ1A0029\", 100], [\"23BQ1A1210\", 100], [\"23BQ1A1781\", 100], [\"23BQ1A1549\", 99], [\"23BQ1A0476\", 94]]"
+  },
+  {
+    "query_id": "Q112",
+    "question": "Show the overall attendance for roll number 26BQ1A6050.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM attendance WHERE student_id='26BQ1A6050';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q113",
+    "question": "What is cloud computing and what are its service models?",
+    "route": "RAG",
+    "subtype": "General",
+    "gold_sql": "",
+    "gold_rag_source": "KB: General",
+    "gold_answer": "IaaS, PaaS, SaaS"
+  },
+  {
+    "query_id": "Q114",
+    "question": "Book a train ticket from Guntur to Hyderabad.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "travel-weather",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q115",
+    "question": "Please tell me: what are the marks of 23BQ1A9430?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM marks WHERE student_id='23BQ1A9430';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q116",
+    "question": "What are the marks of 26BQ1A5687?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM marks WHERE student_id='26BQ1A5687';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q117",
+    "question": "Explain the life cycle of a thread in Java.",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "new, runnable, running, blocked/waiting, terminated"
+  },
+  {
+    "query_id": "Q118",
+    "question": "Please tell me: what is the overall attendance percentage of 24BQ1A1386?",
+    "route": "SQL",
+    "subtype": "attendance-overall",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='24BQ1A1386';",
+    "gold_rag_source": "",
+    "gold_answer": "[[71.1]]"
+  },
+  {
+    "query_id": "Q119",
+    "question": "Please tell me: show 26BQ1A0612's attendance in Nuclear Engineering.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0612' AND c.course_name='Nuclear Engineering';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q120",
+    "question": "Count students with attendance shortage in Digital Signal Processing.",
+    "route": "SQL",
+    "subtype": "count-shortage",
+    "gold_sql": "SELECT COUNT(*) FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE c.course_name='Digital Signal Processing' AND 100.0*a.attended_classes/a.total_classes<75;",
+    "gold_rag_source": "",
+    "gold_answer": "[[40]]"
+  },
+  {
+    "query_id": "Q121",
+    "question": "How many CSE year 3 students have overall attendance below 65%, and what action does the college take on them?",
+    "route": "BOTH",
+    "subtype": "attendance-detention",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='CSE' AND s.year=3 GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[10]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q122",
+    "question": "What is the CIA triad in information security?",
+    "route": "RAG",
+    "subtype": "General",
+    "gold_sql": "",
+    "gold_rag_source": "KB: General",
+    "gold_answer": "confidentiality, integrity, availability"
+  },
+  {
+    "query_id": "Q123",
+    "question": "Please tell me: which department and year is 26BQ1A0766 studying in?",
+    "route": "SQL",
+    "subtype": "student-profile",
+    "gold_sql": "SELECT department, year, section FROM students WHERE student_id='26BQ1A0766';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"ECE\", 1, \"C\"]]"
+  },
+  {
+    "query_id": "Q124",
+    "question": "Which courses does Nirmala Joseph handle?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Nirmala Joseph';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q125",
+    "question": "What is the difference between the waterfall and agile models?",
+    "route": "RAG",
+    "subtype": "SE",
+    "gold_sql": "",
+    "gold_rag_source": "KB: SE",
+    "gold_answer": "sequential vs iterative"
+  },
+  {
+    "query_id": "Q126",
+    "question": "Add up all the marks of student 25BQ1A0256.",
+    "route": "SQL",
+    "subtype": "marks-aggregate",
+    "gold_sql": "SELECT SUM(marks_obtained) FROM marks WHERE student_id='25BQ1A0256';",
+    "gold_rag_source": "",
+    "gold_answer": "[[375]]"
+  },
+  {
+    "query_id": "Q127",
+    "question": "How many CSM students have overall attendance below 65%?",
+    "route": "SQL",
+    "subtype": "count-shortage",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='CSM' GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "",
+    "gold_answer": "[[60]]"
+  },
+  {
+    "query_id": "Q128",
+    "question": "What is overfitting and how can it be prevented?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "memorizing noise; regularization, more data, cross-validation"
+  },
+  {
+    "query_id": "Q129",
+    "question": "Delete all the marks of student 23BQ1A0001.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "unsafe-write-or-admin",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q130",
+    "question": "When is the next Marvel movie releasing?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "entertainment",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q131",
+    "question": "Did 23BQ1A1704 pass Satellite Communications? Also explain the passing criteria.",
+    "route": "BOTH",
+    "subtype": "pass-fail",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1704' AND c.course_name='Satellite Communications';",
+    "gold_rag_source": "documents/academic_regulations.md #2 Passing criteria",
+    "gold_answer": "SQL: [[57]] | RULE: Pass mark is 40/100."
+  },
+  {
+    "query_id": "Q132",
+    "question": "Give me a recipe for chicken biryani.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "lifestyle",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q133",
+    "question": "Hi, which semester does Digital Electronics belong to?",
+    "route": "SQL",
+    "subtype": "course-info",
+    "gold_sql": "SELECT semester FROM courses WHERE course_name='Digital Electronics';",
+    "gold_rag_source": "",
+    "gold_answer": "[[3]]"
+  },
+  {
+    "query_id": "Q134",
+    "question": "Quick question - how many CSM year 3 students have overall attendance below 65%, and what action does the college take on them?",
+    "route": "BOTH",
+    "subtype": "attendance-detention",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='CSM' AND s.year=3 GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[14]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q135",
+    "question": "What is the average marks of CSM year 1 students across all courses?",
+    "route": "SQL",
+    "subtype": "aggregate-cohort",
+    "gold_sql": "SELECT ROUND(AVG(m.marks_obtained),2) FROM marks m JOIN students s ON s.student_id=m.student_id WHERE s.department='CSM' AND s.year=1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[60.63]]"
+  },
+  {
+    "query_id": "Q136",
+    "question": "Who are the five highest scoring students in Object Oriented Programming through Java?",
+    "route": "SQL",
+    "subtype": "top-n",
+    "gold_sql": "SELECT m.student_id, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Object Oriented Programming through Java' ORDER BY m.marks_obtained DESC, m.student_id LIMIT 5;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"25BQ1A1288\", 98], [\"25BQ1A1217\", 96], [\"25BQ1A1281\", 95], [\"25BQ1A1891\", 95], [\"25BQ1A0894\", 92]]"
+  },
+  {
+    "query_id": "Q137",
+    "question": "Please tell me: list the courses offered in CSM semester 6.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-semester",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='CSM' AND semester=6;",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q138",
+    "question": "What are the ACID properties of a transaction?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "atomicity, consistency, isolation, durability"
+  },
+  {
+    "query_id": "Q139",
+    "question": "What is the cricket score today?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "sports",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q140",
+    "question": "26BQ1A0878 failed Digital Logic Design. Show the marks and explain how the supplementary exam works.",
+    "route": "BOTH",
+    "subtype": "supplementary",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0878' AND c.course_name='Digital Logic Design';",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[27]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q141",
+    "question": "Please tell me: show the MBA (MBA) students in year 4.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-department",
+    "gold_sql": "SELECT student_id FROM students WHERE department='MBA';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q142",
+    "question": "Find me cheap flights to Delhi.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "travel-weather",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q143",
+    "question": "What are the best places to visit in Goa?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "travel-weather",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q144",
+    "question": "What is the difference between unit testing and integration testing?",
+    "route": "RAG",
+    "subtype": "SE",
+    "gold_sql": "",
+    "gold_rag_source": "KB: SE",
+    "gold_answer": "single component vs interaction between components"
+  },
+  {
+    "query_id": "Q145",
+    "question": "What is the attendance percentage of 25BQ1A0624 in Computer Architecture?",
+    "route": "SQL",
+    "subtype": "attendance-course",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A0624' AND c.course_name='Computer Architecture';",
+    "gold_rag_source": "",
+    "gold_answer": "[[100.0]]"
+  },
+  {
+    "query_id": "Q146",
+    "question": "Quick question - what is the average marks of CSM year 4 students across all courses?",
+    "route": "SQL",
+    "subtype": "aggregate-cohort",
+    "gold_sql": "SELECT ROUND(AVG(m.marks_obtained),2) FROM marks m JOIN students s ON s.student_id=m.student_id WHERE s.department='CSM' AND s.year=4;",
+    "gold_rag_source": "",
+    "gold_answer": "[[61.18]]"
+  },
+  {
+    "query_id": "Q147",
+    "question": "What is BCNF and how does it differ from 3NF?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "every determinant is a candidate key"
+  },
+  {
+    "query_id": "Q148",
+    "question": "Quick question - how many students failed Control Systems?",
+    "route": "SQL",
+    "subtype": "count-fail",
+    "gold_sql": "SELECT COUNT(*) FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Control Systems' AND m.marks_obtained<40;",
+    "gold_rag_source": "",
+    "gold_answer": "[[12]]"
+  },
+  {
+    "query_id": "Q149",
+    "question": "Explain paging and segmentation in memory management.",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "fixed-size pages vs logical segments"
+  },
+  {
+    "query_id": "Q150",
+    "question": "Quick question - did 25BQ1A0225 pass Operating Systems? Also explain the passing criteria.",
+    "route": "BOTH",
+    "subtype": "pass-fail",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0225' AND c.course_name='Operating Systems';",
+    "gold_rag_source": "documents/academic_regulations.md #2 Passing criteria",
+    "gold_answer": "SQL: [[43]] | RULE: Pass mark is 40/100."
+  },
+  {
+    "query_id": "Q151",
+    "question": "Which courses does Lalitha Devi Pothuri handle?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Lalitha Devi Pothuri';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q152",
+    "question": "What did 25BQ1A1595 score in Nuclear Engineering?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A1595' AND c.course_name='Nuclear Engineering';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q153",
+    "question": "Please tell me: which courses has 23BQ1A1562 failed, and how can the student clear them?",
+    "route": "BOTH",
+    "subtype": "backlog",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1562' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[\"Deep Learning\", 12], [\"Natural Language Processing\", 8], [\"Big Data Analytics\", 35], [\"Computer Vision\", 25], [\"Reinforcement Learning\", 35]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q154",
+    "question": "Hi, how many students are there in ECE year 1?",
+    "route": "SQL",
+    "subtype": "count-students",
+    "gold_sql": "SELECT COUNT(*) FROM students WHERE department='ECE' AND year=1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[136]]"
+  },
+  {
+    "query_id": "Q155",
+    "question": "Which semester does Computer Organization belong to?",
+    "route": "SQL",
+    "subtype": "course-info",
+    "gold_sql": "SELECT semester FROM courses WHERE course_name='Computer Organization';",
+    "gold_rag_source": "",
+    "gold_answer": "[[3]]"
+  },
+  {
+    "query_id": "Q156",
+    "question": "How do I reset my Instagram password?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "shopping-tech",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q157",
+    "question": "Who teaches Organic Chemistry?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Organic Chemistry';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q158",
+    "question": "Give the class average for Digital Signal Processing.",
+    "route": "SQL",
+    "subtype": "aggregate-course",
+    "gold_sql": "SELECT ROUND(AVG(m.marks_obtained),2) FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Digital Signal Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "[[60.89]]"
+  },
+  {
+    "query_id": "Q159",
+    "question": "What is the attendance of students in another college?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "other-institutions",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q160",
+    "question": "Which courses are handled by Gayathri Chaudry?",
+    "route": "SQL",
+    "subtype": "courses-of-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Gayathri Chaudry' ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"C Programming\"], [\"Data Structures using C++\"], [\"Web Technologies\"], [\"Distributed Systems\"]]"
+  },
+  {
+    "query_id": "Q161",
+    "question": "Please tell me: list 25BQ1A0338's failed subjects and explain how to clear the backlogs.",
+    "route": "BOTH",
+    "subtype": "backlog",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0338' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[\"Object Oriented Programming through Java\", 36], [\"Probability and Statistics\", 39]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q162",
+    "question": "Quick question - give me the details of student 24BQ1A6188.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM students WHERE student_id='24BQ1A6188';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q163",
+    "question": "What is a firewall?",
+    "route": "RAG",
+    "subtype": "Networks",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Networks",
+    "gold_answer": "filters network traffic by rules"
+  },
+  {
+    "query_id": "Q164",
+    "question": "Hi, what is time complexity? Also, how did 24BQ1A1122 perform in Design and Analysis of Algorithms?",
+    "route": "BOTH",
+    "subtype": "concept-plus-record",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1122' AND c.course_name='Design and Analysis of Algorithms';",
+    "gold_rag_source": "KB: Time complexity",
+    "gold_answer": "SQL: [[53]] | RULE: Concept explanation of time complexity from knowledge base."
+  },
+  {
+    "query_id": "Q165",
+    "question": "Can 26BQ1A0984 appear for the Linear Algebra and Calculus semester exam given the attendance?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='26BQ1A0984' AND c.course_name='Linear Algebra and Calculus';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[86.5]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q166",
+    "question": "Show me the admin password of the college portal.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "unsafe-write-or-admin",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q167",
+    "question": "Quick question - list the courses offered in CSM semester 1.",
+    "route": "SQL",
+    "subtype": "course-list",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='CSM' AND semester=1 ORDER BY course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Mathematics for Machine Learning\"], [\"Programming in Python\"], [\"Digital Logic Design\"], [\"Data Structures\"], [\"Discrete Mathematics\"]]"
+  },
+  {
+    "query_id": "Q168",
+    "question": "What is the designation of Yashasvi Bala?",
+    "route": "SQL",
+    "subtype": "faculty-info",
+    "gold_sql": "SELECT designation, department FROM faculty WHERE name='Yashasvi Bala';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Assistant Professor\", \"CSM\"]]"
+  },
+  {
+    "query_id": "Q169",
+    "question": "What is the difference between a mutex and a semaphore?",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "ownership-based lock vs signalling counter"
+  },
+  {
+    "query_id": "Q170",
+    "question": "What is the difference between a list and a tuple in Python?",
+    "route": "RAG",
+    "subtype": "Python",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Python",
+    "gold_answer": "mutable vs immutable"
+  },
+  {
+    "query_id": "Q171",
+    "question": "What is the difference between L1 and L2 regularization?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "sparsity vs weight shrinkage"
+  },
+  {
+    "query_id": "Q172",
+    "question": "How are you feeling today?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "general-chat",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q173",
+    "question": "What is the difference between BFS and DFS?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "level-order with queue vs depth-first with stack"
+  },
+  {
+    "query_id": "Q174",
+    "question": "What are the necessary conditions for deadlock?",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "mutual exclusion, hold and wait, no preemption, circular wait"
+  },
+  {
+    "query_id": "Q175",
+    "question": "Quick question - list the courses offered in CSM semester 4.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-semester",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='CSM' AND semester=4;",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q176",
+    "question": "Quick question - show the Law (LAW) students in year 3.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-department",
+    "gold_sql": "SELECT student_id FROM students WHERE department='LAW';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q177",
+    "question": "Give me the details of student 26BQ1A7420.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM students WHERE student_id='26BQ1A7420';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q178",
+    "question": "Explain the bias-variance tradeoff.",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "underfit vs overfit balance"
+  },
+  {
+    "query_id": "Q179",
+    "question": "List the courses offered in CSE semester 2.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-semester",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='CSE' AND semester=2;",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q180",
+    "question": "Quick question - show 24BQ1A1089's marks in Software Engineering and tell me the corresponding grade.",
+    "route": "BOTH",
+    "subtype": "grading",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1089' AND c.course_name='Software Engineering';",
+    "gold_rag_source": "documents/academic_regulations.md #3 Grading scheme",
+    "gold_answer": "SQL: [[76]] | RULE: O 90+, A+ 80-89, A 70-79, B+ 60-69, B 50-59, C 40-49, F <40."
+  },
+  {
+    "query_id": "Q181",
+    "question": "What is the Global Interpreter Lock?",
+    "route": "RAG",
+    "subtype": "Python",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Python",
+    "gold_answer": "mutex allowing one thread to run bytecode at a time"
+  },
+  {
+    "query_id": "Q182",
+    "question": "What do you think of the current government?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "politics-news",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q183",
+    "question": "Export all students' personal email addresses.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "unsafe-write-or-admin",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q184",
+    "question": "Update my attendance in Database Management Systems to 100%.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "unsafe-write-or-admin",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q185",
+    "question": "Change my marks in Operating Systems to 90.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "unsafe-write-or-admin",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q186",
+    "question": "How does a HashMap work internally?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "hashing to buckets, equals/hashCode, collision handling"
+  },
+  {
+    "query_id": "Q187",
+    "question": "Hi, what section is student 24BQ1A0868 in?",
+    "route": "SQL",
+    "subtype": "student-profile",
+    "gold_sql": "SELECT department, year, section FROM students WHERE student_id='24BQ1A0868';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"ECE\", 3, \"C\"]]"
+  },
+  {
+    "query_id": "Q188",
+    "question": "What is garbage collection in Java?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "automatic reclaiming of unreachable objects"
+  },
+  {
+    "query_id": "Q189",
+    "question": "Count students with attendance shortage in Java Programming.",
+    "route": "SQL",
+    "subtype": "count-shortage",
+    "gold_sql": "SELECT COUNT(*) FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE c.course_name='Java Programming' AND 100.0*a.attended_classes/a.total_classes<75;",
+    "gold_rag_source": "",
+    "gold_answer": "[[55]]"
+  },
+  {
+    "query_id": "Q190",
+    "question": "25BQ1A0595 failed Control Systems. Show the marks and explain how the supplementary exam works.",
+    "route": "BOTH",
+    "subtype": "supplementary",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0595' AND c.course_name='Control Systems';",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[37]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q191",
+    "question": "What are decorators in Python?",
+    "route": "RAG",
+    "subtype": "Python",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Python",
+    "gold_answer": "functions wrapping other functions"
+  },
+  {
+    "query_id": "Q192",
+    "question": "What is hashing and how are collisions handled?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "hash function; chaining or open addressing"
+  },
+  {
+    "query_id": "Q193",
+    "question": "Quick question - how many CSM year 2 students have overall attendance below 65%, and what action does the college take on them?",
+    "route": "BOTH",
+    "subtype": "attendance-detention",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='CSM' AND s.year=2 GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[12]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q194",
+    "question": "What is indexing in databases and how does it speed up queries?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "auxiliary structure like B-tree avoiding full scans"
+  },
+  {
+    "query_id": "Q195",
+    "question": "What is the difference between a primary key and a foreign key?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "unique row identifier vs reference to another table"
+  },
+  {
+    "query_id": "Q196",
+    "question": "Please tell me: how many students are in section B of ECE year 3?",
+    "route": "SQL",
+    "subtype": "count-students",
+    "gold_sql": "SELECT COUNT(*) FROM students WHERE department='ECE' AND year=3 AND section='B';",
+    "gold_rag_source": "",
+    "gold_answer": "[[41]]"
+  },
+  {
+    "query_id": "Q197",
+    "question": "Show 26BQ1A0771's marks in Data Structures and tell me the corresponding grade.",
+    "route": "BOTH",
+    "subtype": "grading",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0771' AND c.course_name='Data Structures';",
+    "gold_rag_source": "documents/academic_regulations.md #3 Grading scheme",
+    "gold_answer": "SQL: [[62]] | RULE: O 90+, A+ 80-89, A 70-79, B+ 60-69, B 50-59, C 40-49, F <40."
+  },
+  {
+    "query_id": "Q198",
+    "question": "Quick question - what are the marks of 24BQ1A2835?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM marks WHERE student_id='24BQ1A2835';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q199",
+    "question": "Translate 'good morning' into five languages.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "personal-misc",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q200",
+    "question": "What is Big-O notation?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "upper bound on growth of running time"
+  },
+  {
+    "query_id": "Q201",
+    "question": "Quick question - is 23BQ1A1653 eligible for promotion to the next year? Check overall attendance and the promotion rule.",
+    "route": "BOTH",
+    "subtype": "promotion",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='23BQ1A1653';",
+    "gold_rag_source": "documents/academic_regulations.md #6 Promotion",
+    "gold_answer": "SQL: [[80.8]] | RULE: Promotion needs overall attendance >=75% (or condoned) and <=4 backlogs."
+  },
+  {
+    "query_id": "Q202",
+    "question": "What is the roll number of Pratyush Gandhi?",
+    "route": "SQL",
+    "subtype": "name-lookup",
+    "gold_sql": "SELECT student_id FROM students WHERE name='Pratyush Gandhi';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"24BQ1A0665\"]]"
+  },
+  {
+    "query_id": "Q203",
+    "question": "Why do I have attendance shortage in Natural Language Processing? Roll number 23BQ1A1767. What can I do about it?",
+    "route": "BOTH",
+    "subtype": "attendance-shortage",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A1767' AND c.course_name='Natural Language Processing';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[68.1]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q204",
+    "question": "What is IP addressing and subnetting?",
+    "route": "RAG",
+    "subtype": "Networks",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Networks",
+    "gold_answer": "IPv4 addressing and network division"
+  },
+  {
+    "query_id": "Q205",
+    "question": "What is the fee structure of Stanford University?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "other-institutions",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q206",
+    "question": "Which department is 24BQ1A7375 in?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM students WHERE student_id='24BQ1A7375';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q207",
+    "question": "What is the difference between a process and a thread?",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "independent address space vs shared within process"
+  },
+  {
+    "query_id": "Q208",
+    "question": "What is a REST API?",
+    "route": "RAG",
+    "subtype": "General",
+    "gold_sql": "",
+    "gold_rag_source": "KB: General",
+    "gold_answer": "stateless HTTP resource-based interface"
+  },
+  {
+    "query_id": "Q209",
+    "question": "Which restaurant near campus has the best biryani?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "travel-weather",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q210",
+    "question": "What is the total marks obtained by 26BQ1A1548?",
+    "route": "SQL",
+    "subtype": "marks-aggregate",
+    "gold_sql": "SELECT SUM(marks_obtained) FROM marks WHERE student_id='26BQ1A1548';",
+    "gold_rag_source": "",
+    "gold_answer": "[[321]]"
+  },
+  {
+    "query_id": "Q211",
+    "question": "Please tell me: which semester does Digital Signal Processing belong to?",
+    "route": "SQL",
+    "subtype": "course-info",
+    "gold_sql": "SELECT semester FROM courses WHERE course_name='Digital Signal Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "[[3]]"
+  },
+  {
+    "query_id": "Q212",
+    "question": "Please tell me: who teaches Organic Chemistry?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Organic Chemistry';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q213",
+    "question": "Count students with attendance shortage in Wireless Communications.",
+    "route": "SQL",
+    "subtype": "count-shortage",
+    "gold_sql": "SELECT COUNT(*) FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE c.course_name='Wireless Communications' AND 100.0*a.attended_classes/a.total_classes<75;",
+    "gold_rag_source": "",
+    "gold_answer": "[[47]]"
+  },
+  {
+    "query_id": "Q214",
+    "question": "Show 26BQ1A1790's marks in Satellite Communications.",
+    "route": "NOT-FOUND",
+    "subtype": "not-enrolled",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1790' AND c.course_name='Satellite Communications';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q215",
+    "question": "Quick question - add up all the marks of student 25BQ1A0639.",
+    "route": "SQL",
+    "subtype": "marks-aggregate",
+    "gold_sql": "SELECT SUM(marks_obtained) FROM marks WHERE student_id='25BQ1A0639';",
+    "gold_rag_source": "",
+    "gold_answer": "[[359]]"
+  },
+  {
+    "query_id": "Q216",
+    "question": "Quick question - list the subjects taught by Vedant Mann.",
+    "route": "SQL",
+    "subtype": "courses-of-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Vedant Mann' ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Engineering Chemistry\"]]"
+  },
+  {
+    "query_id": "Q217",
+    "question": "What are the phases of the Software Development Life Cycle?",
+    "route": "RAG",
+    "subtype": "SE",
+    "gold_sql": "",
+    "gold_rag_source": "KB: SE",
+    "gold_answer": "requirements, design, implementation, testing, deployment, maintenance"
+  },
+  {
+    "query_id": "Q218",
+    "question": "Please tell me: what is the roll number of Mahika Merchant?",
+    "route": "SQL",
+    "subtype": "name-lookup",
+    "gold_sql": "SELECT student_id FROM students WHERE name='Mahika Merchant';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"24BQ1A1953\"]]"
+  },
+  {
+    "query_id": "Q219",
+    "question": "24BQ1A1195 is unhappy with the Formal Languages and Automata Theory result. Show the marks and explain the revaluation procedure.",
+    "route": "BOTH",
+    "subtype": "revaluation",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1195' AND c.course_name='Formal Languages and Automata Theory';",
+    "gold_rag_source": "documents/academic_regulations.md #5 Revaluation",
+    "gold_answer": "SQL: [[65]] | RULE: Apply within 7 days of result declaration with per-course fee; better marks retained."
+  },
+  {
+    "query_id": "Q220",
+    "question": "Quick question - show my overall attendance. Roll number 26BQ1A0778.",
+    "route": "SQL",
+    "subtype": "attendance-overall",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='26BQ1A0778';",
+    "gold_rag_source": "",
+    "gold_answer": "[[91.5]]"
+  },
+  {
+    "query_id": "Q221",
+    "question": "Recommend some songs for a road trip.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "entertainment",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q222",
+    "question": "What will the weather be in Vijayawada tomorrow?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "travel-weather",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q223",
+    "question": "Who will win the next general election?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "politics-news",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q224",
+    "question": "What is the plot of Inception?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "entertainment",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q225",
+    "question": "What is context switching?",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "saving and restoring process state on CPU switch"
+  },
+  {
+    "query_id": "Q226",
+    "question": "List 26BQ1A1523's failed subjects and explain how to clear the backlogs.",
+    "route": "BOTH",
+    "subtype": "backlog",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1523' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[\"Mathematics for Machine Learning\", 31], [\"Programming in Python\", 28], [\"Digital Logic Design\", 32]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q227",
+    "question": "Please tell me: show 26BQ1A1101's marks in Linear Algebra and Calculus.",
+    "route": "NOT-FOUND",
+    "subtype": "not-enrolled",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1101' AND c.course_name='Linear Algebra and Calculus';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q228",
+    "question": "What did 25BQ1A1462 score in Organic Chemistry?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A1462' AND c.course_name='Organic Chemistry';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q229",
+    "question": "Quick question - in which semester is Image Processing taught?",
+    "route": "SQL",
+    "subtype": "course-info",
+    "gold_sql": "SELECT semester FROM courses WHERE course_name='Image Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "[[7]]"
+  },
+  {
+    "query_id": "Q230",
+    "question": "What is DevOps?",
+    "route": "RAG",
+    "subtype": "SE",
+    "gold_sql": "",
+    "gold_rag_source": "KB: SE",
+    "gold_answer": "development and operations automation, CI/CD"
+  },
+  {
+    "query_id": "Q231",
+    "question": "24BQ1A0353 failed Formal Languages and Automata Theory. Show the marks and explain how the supplementary exam works.",
+    "route": "BOTH",
+    "subtype": "supplementary",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0353' AND c.course_name='Formal Languages and Automata Theory';",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[33]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q232",
+    "question": "How many CSM students have overall attendance below 75%?",
+    "route": "SQL",
+    "subtype": "count-shortage",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='CSM' GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<75);",
+    "gold_rag_source": "",
+    "gold_answer": "[[258]]"
+  },
+  {
+    "query_id": "Q233",
+    "question": "What are the different access modifiers in Java?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "public, protected, default, private"
+  },
+  {
+    "query_id": "Q234",
+    "question": "Hi, show 25BQ1A1072's marks in Engineering Chemistry.",
+    "route": "NOT-FOUND",
+    "subtype": "not-enrolled",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A1072' AND c.course_name='Engineering Chemistry';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q235",
+    "question": "Did 24BQ1A1796 pass Information Security? Also explain the passing criteria.",
+    "route": "BOTH",
+    "subtype": "pass-fail",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1796' AND c.course_name='Information Security';",
+    "gold_rag_source": "documents/academic_regulations.md #2 Passing criteria",
+    "gold_answer": "SQL: [[87]] | RULE: Pass mark is 40/100."
+  },
+  {
+    "query_id": "Q236",
+    "question": "List the courses offered in CSE semester 3.",
+    "route": "SQL",
+    "subtype": "course-list",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='CSE' AND semester=3 ORDER BY course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Data Structures using C++\"], [\"Digital Electronics\"], [\"Java Programming\"], [\"Discrete Structures\"], [\"Computer Architecture\"]]"
+  },
+  {
+    "query_id": "Q237",
+    "question": "What is an ER diagram?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "entities, attributes, relationships model"
+  },
+  {
+    "query_id": "Q238",
+    "question": "In which subjects did 25BQ1A0197 score below 40?",
+    "route": "SQL",
+    "subtype": "marks-filter",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0197' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Electromagnetic Theory\", 35], [\"Control Systems\", 37]]"
+  },
+  {
+    "query_id": "Q239",
+    "question": "Give the class average for Image Processing.",
+    "route": "SQL",
+    "subtype": "aggregate-course",
+    "gold_sql": "SELECT ROUND(AVG(m.marks_obtained),2) FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Image Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "[[61.13]]"
+  },
+  {
+    "query_id": "Q240",
+    "question": "What are system calls?",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "interface between user programs and kernel"
+  },
+  {
+    "query_id": "Q241",
+    "question": "What is the average marks of CSE year 1 students across all courses?",
+    "route": "SQL",
+    "subtype": "aggregate-cohort",
+    "gold_sql": "SELECT ROUND(AVG(m.marks_obtained),2) FROM marks m JOIN students s ON s.student_id=m.student_id WHERE s.department='CSE' AND s.year=1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[62.69]]"
+  },
+  {
+    "query_id": "Q242",
+    "question": "25BQ1A1429 failed Computer Architecture. Show the marks and explain how the supplementary exam works.",
+    "route": "BOTH",
+    "subtype": "supplementary",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A1429' AND c.course_name='Computer Architecture';",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[36]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q243",
+    "question": "What is the distance from Vijayawada to Chennai?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "travel-weather",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q244",
+    "question": "What is the difference between SQL and NoSQL databases?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "relational schema vs flexible non-relational models"
+  },
+  {
+    "query_id": "Q245",
+    "question": "How do I file my income tax return?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "finance",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q246",
+    "question": "Please tell me: how many ECE year 2 students have overall attendance below 65%, and what action does the college take on them?",
+    "route": "BOTH",
+    "subtype": "attendance-detention",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='ECE' AND s.year=2 GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[9]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q247",
+    "question": "Quick question - what are the marks of 23BQ1A0365 in Image Processing?",
+    "route": "SQL",
+    "subtype": "marks-lookup",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A0365' AND c.course_name='Image Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "[[48]]"
+  },
+  {
+    "query_id": "Q248",
+    "question": "Suggest a good Telugu movie to watch this weekend.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "entertainment",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q249",
+    "question": "What is the designation of Ekaraj Bath?",
+    "route": "SQL",
+    "subtype": "faculty-info",
+    "gold_sql": "SELECT designation, department FROM faculty WHERE name='Ekaraj Bath';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Professor\", \"ECE\"]]"
+  },
+  {
+    "query_id": "Q250",
+    "question": "What are UML diagrams?",
+    "route": "RAG",
+    "subtype": "SE",
+    "gold_sql": "",
+    "gold_rag_source": "KB: SE",
+    "gold_answer": "standard notation for modelling software"
+  },
+  {
+    "query_id": "Q251",
+    "question": "What is congestion control in TCP?",
+    "route": "RAG",
+    "subtype": "Networks",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Networks",
+    "gold_answer": "slow start, congestion avoidance"
+  },
+  {
+    "query_id": "Q252",
+    "question": "Explain the this and super keywords in Java.",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "current object reference vs parent class reference"
+  },
+  {
+    "query_id": "Q253",
+    "question": "What are the credits for Data Structures using C++?",
+    "route": "SQL",
+    "subtype": "course-info",
+    "gold_sql": "SELECT credits FROM courses WHERE course_name='Data Structures using C++';",
+    "gold_rag_source": "",
+    "gold_answer": "[[4]]"
+  },
+  {
+    "query_id": "Q254",
+    "question": "What subjects does ECE have in semester 3?",
+    "route": "SQL",
+    "subtype": "course-list",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='ECE' AND semester=3 ORDER BY course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Analog Circuits\"], [\"Digital Signal Processing\"], [\"Electromagnetic Theory\"], [\"Control Systems\"], [\"Microprocessors\"]]"
+  },
+  {
+    "query_id": "Q255",
+    "question": "What is the difference between DELETE, TRUNCATE and DROP?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "rows vs all rows quickly vs table removal"
+  },
+  {
+    "query_id": "Q256",
+    "question": "Did 25BQ1A0032 pass Computer Organization? Also explain the passing criteria.",
+    "route": "BOTH",
+    "subtype": "pass-fail",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0032' AND c.course_name='Computer Organization';",
+    "gold_rag_source": "documents/academic_regulations.md #2 Passing criteria",
+    "gold_answer": "SQL: [[61]] | RULE: Pass mark is 40/100."
+  },
+  {
+    "query_id": "Q257",
+    "question": "What is backpropagation?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "gradient computation via chain rule"
+  },
+  {
+    "query_id": "Q258",
+    "question": "Hi, 26BQ1A0269 is unhappy with the Data Structures result. Show the marks and explain the revaluation procedure.",
+    "route": "BOTH",
+    "subtype": "revaluation",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0269' AND c.course_name='Data Structures';",
+    "gold_rag_source": "documents/academic_regulations.md #5 Revaluation",
+    "gold_answer": "SQL: [[63]] | RULE: Apply within 7 days of result declaration with per-course fee; better marks retained."
+  },
+  {
+    "query_id": "Q259",
+    "question": "Quick question - in which course does 26BQ1A0007 have the lowest attendance?",
+    "route": "SQL",
+    "subtype": "attendance-extreme",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='26BQ1A0007' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Engineering Chemistry\", 40.4]]"
+  },
+  {
+    "query_id": "Q260",
+    "question": "Quick question - which department and year is 26BQ1A1410 studying in?",
+    "route": "SQL",
+    "subtype": "student-profile",
+    "gold_sql": "SELECT department, year, section FROM students WHERE student_id='26BQ1A1410';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"CSE\", 1, \"B\"]]"
+  },
+  {
+    "query_id": "Q261",
+    "question": "Explain the different types of SQL joins.",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "inner, left, right, full outer"
+  },
+  {
+    "query_id": "Q262",
+    "question": "Hi, what did 25BQ1A0777 score in Cryptocurrency Economics?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0777' AND c.course_name='Cryptocurrency Economics';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q263",
+    "question": "Is 23BQ1A0626 eligible for promotion to the next year? Check overall attendance and the promotion rule.",
+    "route": "BOTH",
+    "subtype": "promotion",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='23BQ1A0626';",
+    "gold_rag_source": "documents/academic_regulations.md #6 Promotion",
+    "gold_answer": "SQL: [[70.8]] | RULE: Promotion needs overall attendance >=75% (or condoned) and <=4 backlogs."
+  },
+  {
+    "query_id": "Q264",
+    "question": "Hi, what is the attendance of 24BQ1A3955?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM attendance WHERE student_id='24BQ1A3955';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q265",
+    "question": "What is the difference between HTTP and HTTPS?",
+    "route": "RAG",
+    "subtype": "Networks",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Networks",
+    "gold_answer": "TLS-encrypted transport"
+  },
+  {
+    "query_id": "Q266",
+    "question": "What is list comprehension?",
+    "route": "RAG",
+    "subtype": "Python",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Python",
+    "gold_answer": "concise list construction syntax"
+  },
+  {
+    "query_id": "Q267",
+    "question": "How many CSM year 2 students have overall attendance below 65%, and what action does the college take on them?",
+    "route": "BOTH",
+    "subtype": "attendance-detention",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='CSM' AND s.year=2 GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[12]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q268",
+    "question": "Which semester is Nuclear Engineering offered in?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Nuclear Engineering';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q269",
+    "question": "Who scored the highest marks in Deep Learning?",
+    "route": "SQL",
+    "subtype": "topper",
+    "gold_sql": "SELECT m.student_id, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Deep Learning' ORDER BY m.marks_obtained DESC, m.student_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"23BQ1A0048\", 99]]"
+  },
+  {
+    "query_id": "Q270",
+    "question": "Please tell me: list 23BQ1A1660's failed subjects and explain how to clear the backlogs.",
+    "route": "BOTH",
+    "subtype": "backlog",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1660' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[\"Blockchain Technology\", 36]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q271",
+    "question": "What is a heap data structure?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "complete binary tree with heap property"
+  },
+  {
+    "query_id": "Q272",
+    "question": "Can 24BQ1A1306 appear for the Design and Analysis of Algorithms semester exam given the attendance?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='24BQ1A1306' AND c.course_name='Design and Analysis of Algorithms';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[66.7]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q273",
+    "question": "Hi, in which course does 25BQ1A1371 have the lowest attendance?",
+    "route": "SQL",
+    "subtype": "attendance-extreme",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A1371' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Digital Signal Processing\", 64.4]]"
+  },
+  {
+    "query_id": "Q274",
+    "question": "Please tell me: what is the highest mark scored by 23BQ1A0439 and in which course?",
+    "route": "SQL",
+    "subtype": "marks-extreme",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A0439' ORDER BY m.marks_obtained DESC, c.course_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Image Processing\", 79]]"
+  },
+  {
+    "query_id": "Q275",
+    "question": "Grant me administrator access to the database.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "unsafe-write-or-admin",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q276",
+    "question": "Who teaches Natural Language Processing?",
+    "route": "SQL",
+    "subtype": "faculty-of-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Natural Language Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Thomas Sen\"]]"
+  },
+  {
+    "query_id": "Q277",
+    "question": "What is the difference between a compiler and an interpreter?",
+    "route": "RAG",
+    "subtype": "General",
+    "gold_sql": "",
+    "gold_rag_source": "KB: General",
+    "gold_answer": "whole-program translation vs line-by-line execution"
+  },
+  {
+    "query_id": "Q278",
+    "question": "Hi, list the students of the Biotechnology (BIO) department.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-department",
+    "gold_sql": "SELECT student_id FROM students WHERE department='BIO';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q279",
+    "question": "Please tell me: what is the average mark scored in Discrete Mathematics?",
+    "route": "SQL",
+    "subtype": "aggregate-course",
+    "gold_sql": "SELECT ROUND(AVG(m.marks_obtained),2) FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Discrete Mathematics';",
+    "gold_rag_source": "",
+    "gold_answer": "[[60.66]]"
+  },
+  {
+    "query_id": "Q280",
+    "question": "How many students are there in CSM year 4?",
+    "route": "SQL",
+    "subtype": "count-students",
+    "gold_sql": "SELECT COUNT(*) FROM students WHERE department='CSM' AND year=4;",
+    "gold_rag_source": "",
+    "gold_answer": "[[193]]"
+  },
+  {
+    "query_id": "Q281",
+    "question": "Can you sing me a song?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "general-chat",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q282",
+    "question": "What is normalization? Also, how did 25BQ1A0225 perform in Database Management Systems?",
+    "route": "BOTH",
+    "subtype": "concept-plus-record",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0225' AND c.course_name='Database Management Systems';",
+    "gold_rag_source": "KB: DBMS normalization",
+    "gold_answer": "SQL: [[51]] | RULE: Concept explanation of normalization from knowledge base."
+  },
+  {
+    "query_id": "Q283",
+    "question": "Please tell me: what are the marks of 24BQ1A0875 in Microwave Engineering?",
+    "route": "SQL",
+    "subtype": "marks-lookup",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0875' AND c.course_name='Microwave Engineering';",
+    "gold_rag_source": "",
+    "gold_answer": "[[59]]"
+  },
+  {
+    "query_id": "Q284",
+    "question": "What is the difference between String, StringBuilder and StringBuffer?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "immutable vs mutable; StringBuffer synchronized"
+  },
+  {
+    "query_id": "Q285",
+    "question": "What are microservices?",
+    "route": "RAG",
+    "subtype": "General",
+    "gold_sql": "",
+    "gold_rag_source": "KB: General",
+    "gold_answer": "small independently deployable services"
+  },
+  {
+    "query_id": "Q286",
+    "question": "Please tell me: show the marks of student 24BQ1A3634.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM marks WHERE student_id='24BQ1A3634';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q287",
+    "question": "Tell me an interesting story about a dragon.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "general-chat",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q288",
+    "question": "Tell me a joke.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "general-chat",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q289",
+    "question": "Hi, why do I have attendance shortage in Data Structures using C++? Roll number 25BQ1A1876. What can I do about it?",
+    "route": "BOTH",
+    "subtype": "attendance-shortage",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A1876' AND c.course_name='Data Structures using C++';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[64.9]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q290",
+    "question": "Quick question - how many students are there in ECE year 1?",
+    "route": "SQL",
+    "subtype": "count-students",
+    "gold_sql": "SELECT COUNT(*) FROM students WHERE department='ECE' AND year=1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[136]]"
+  },
+  {
+    "query_id": "Q291",
+    "question": "Please tell me: show 24BQ1A0864's score in VLSI Design.",
+    "route": "SQL",
+    "subtype": "marks-lookup",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0864' AND c.course_name='VLSI Design';",
+    "gold_rag_source": "",
+    "gold_answer": "[[37]]"
+  },
+  {
+    "query_id": "Q292",
+    "question": "What is a binary search tree?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "left < node < right ordering"
+  },
+  {
+    "query_id": "Q293",
+    "question": "Write a business plan for my uncle's textile shop.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "personal-misc",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q294",
+    "question": "Hi, which courses has 24BQ1A0433 failed, and how can the student clear them?",
+    "route": "BOTH",
+    "subtype": "backlog",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0433' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[\"Compiler Design\", 33], [\"Mobile Application Development\", 26]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q295",
+    "question": "What is prompt engineering?",
+    "route": "RAG",
+    "subtype": "AI",
+    "gold_sql": "",
+    "gold_rag_source": "KB: AI",
+    "gold_answer": "designing inputs to steer model output"
+  },
+  {
+    "query_id": "Q296",
+    "question": "Please tell me: show all subject-wise marks for 26BQ1A1301.",
+    "route": "SQL",
+    "subtype": "marks-all",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1301' ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Mathematics for Machine Learning\", 91], [\"Programming in Python\", 71], [\"Digital Logic Design\", 75], [\"Data Structures\", 62], [\"Discrete Mathematics\", 62]]"
+  },
+  {
+    "query_id": "Q297",
+    "question": "Number of subjects registered by 24BQ1A1709?",
+    "route": "SQL",
+    "subtype": "count-courses",
+    "gold_sql": "SELECT COUNT(*) FROM marks WHERE student_id='24BQ1A1709';",
+    "gold_rag_source": "",
+    "gold_answer": "[[5]]"
+  },
+  {
+    "query_id": "Q298",
+    "question": "Quick question - explain how a stack works and also show the marks of 26BQ1A0552 in Data Structures.",
+    "route": "BOTH",
+    "subtype": "concept-plus-record",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0552' AND c.course_name='Data Structures';",
+    "gold_rag_source": "KB: Stack",
+    "gold_answer": "SQL: [[50]] | RULE: Concept explanation of how a stack works from knowledge base."
+  },
+  {
+    "query_id": "Q299",
+    "question": "Please tell me: list the subjects taught by Janaki Handa.",
+    "route": "SQL",
+    "subtype": "courses-of-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Janaki Handa' ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Embedded Systems\"], [\"Satellite Communications\"]]"
+  },
+  {
+    "query_id": "Q300",
+    "question": "How do I remove a stain from a white shirt?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "lifestyle",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q301",
+    "question": "Give the class average for Engineering Chemistry.",
+    "route": "SQL",
+    "subtype": "aggregate-course",
+    "gold_sql": "SELECT ROUND(AVG(m.marks_obtained),2) FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Engineering Chemistry';",
+    "gold_rag_source": "",
+    "gold_answer": "[[62.73]]"
+  },
+  {
+    "query_id": "Q302",
+    "question": "In which course is 25BQ1A1352's attendance the lowest, and can that shortage be condoned?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A1352' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[\"Data Structures using C++\", 59.5]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q303",
+    "question": "How many credits is Image Processing?",
+    "route": "SQL",
+    "subtype": "course-info",
+    "gold_sql": "SELECT credits FROM courses WHERE course_name='Image Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "[[4]]"
+  },
+  {
+    "query_id": "Q304",
+    "question": "Show 25BQ1A1690's marks in Image Processing.",
+    "route": "NOT-FOUND",
+    "subtype": "not-enrolled",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A1690' AND c.course_name='Image Processing';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q305",
+    "question": "Which courses has 23BQ1A0181 failed, and how can the student clear them?",
+    "route": "BOTH",
+    "subtype": "backlog",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A0181' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[\"Computer Vision\", 34], [\"Reinforcement Learning\", 33]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q306",
+    "question": "What is inheritance in Java? Also, how did 25BQ1A0501 perform in Object Oriented Programming through Java?",
+    "route": "BOTH",
+    "subtype": "concept-plus-record",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0501' AND c.course_name='Object Oriented Programming through Java';",
+    "gold_rag_source": "KB: Java inheritance",
+    "gold_answer": "SQL: [[50]] | RULE: Concept explanation of inheritance in Java from knowledge base."
+  },
+  {
+    "query_id": "Q307",
+    "question": "Please tell me: number of subjects registered by 23BQ1A1197?",
+    "route": "SQL",
+    "subtype": "count-courses",
+    "gold_sql": "SELECT COUNT(*) FROM marks WHERE student_id='23BQ1A1197';",
+    "gold_rag_source": "",
+    "gold_answer": "[[5]]"
+  },
+  {
+    "query_id": "Q308",
+    "question": "Quick question - what is the highest mark scored by 26BQ1A1794 and in which course?",
+    "route": "SQL",
+    "subtype": "marks-extreme",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1794' ORDER BY m.marks_obtained DESC, c.course_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Engineering Chemistry\", 83]]"
+  },
+  {
+    "query_id": "Q309",
+    "question": "My roll number is 23BQ1A0507. Am I eligible to write the Radar Systems exam based on my attendance?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A0507' AND c.course_name='Radar Systems';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[87.0]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q310",
+    "question": "What is a support vector machine?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "maximum-margin hyperplane classifier"
+  },
+  {
+    "query_id": "Q311",
+    "question": "What is the gold rate today?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "finance",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q312",
+    "question": "What is the difference between JDK, JRE and JVM?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "JDK=dev kit, JRE=runtime, JVM=executes bytecode"
+  },
+  {
+    "query_id": "Q313",
+    "question": "How does a decision tree work?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "splits on features by impurity measures"
+  },
+  {
+    "query_id": "Q314",
+    "question": "What is Retrieval-Augmented Generation (RAG)?",
+    "route": "RAG",
+    "subtype": "AI",
+    "gold_sql": "",
+    "gold_rag_source": "KB: AI",
+    "gold_answer": "retrieve context then generate grounded answer"
+  },
+  {
+    "query_id": "Q315",
+    "question": "In which course is 24BQ1A0811's attendance the lowest, and can that shortage be condoned?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='24BQ1A0811' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[\"Microwave Engineering\", 64.6]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q316",
+    "question": "What is normalization and why is it needed?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "reduce redundancy and anomalies"
+  },
+  {
+    "query_id": "Q317",
+    "question": "Hi, how many students are in section A of CSE year 4?",
+    "route": "SQL",
+    "subtype": "count-students",
+    "gold_sql": "SELECT COUNT(*) FROM students WHERE department='CSE' AND year=4 AND section='A';",
+    "gold_rag_source": "",
+    "gold_answer": "[[65]]"
+  },
+  {
+    "query_id": "Q318",
+    "question": "I have a fever and headache, which medicine should I take?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "medical",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q319",
+    "question": "Explain 1NF, 2NF and 3NF with examples.",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "atomic values; no partial dependency; no transitive dependency"
+  },
+  {
+    "query_id": "Q320",
+    "question": "Please tell me: 23BQ1A0356 is unhappy with the Wireless Communications result. Show the marks and explain the revaluation procedure.",
+    "route": "BOTH",
+    "subtype": "revaluation",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A0356' AND c.course_name='Wireless Communications';",
+    "gold_rag_source": "documents/academic_regulations.md #5 Revaluation",
+    "gold_answer": "SQL: [[61]] | RULE: Apply within 7 days of result declaration with per-course fee; better marks retained."
+  },
+  {
+    "query_id": "Q321",
+    "question": "Quick question - in which subjects did 26BQ1A1523 score below 40?",
+    "route": "SQL",
+    "subtype": "marks-filter",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A1523' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Mathematics for Machine Learning\", 31], [\"Programming in Python\", 28], [\"Digital Logic Design\", 32]]"
+  },
+  {
+    "query_id": "Q322",
+    "question": "How many students failed Wireless Communications?",
+    "route": "SQL",
+    "subtype": "count-fail",
+    "gold_sql": "SELECT COUNT(*) FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Wireless Communications' AND m.marks_obtained<40;",
+    "gold_rag_source": "",
+    "gold_answer": "[[16]]"
+  },
+  {
+    "query_id": "Q323",
+    "question": "Please tell me: what is backpropagation? Also, how did 23BQ1A1413 perform in Deep Learning?",
+    "route": "BOTH",
+    "subtype": "concept-plus-record",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1413' AND c.course_name='Deep Learning';",
+    "gold_rag_source": "KB: Backpropagation",
+    "gold_answer": "SQL: [[49]] | RULE: Concept explanation of backpropagation from knowledge base."
+  },
+  {
+    "query_id": "Q324",
+    "question": "24BQ1A1601 is unhappy with the Formal Languages and Automata Theory result. Show the marks and explain the revaluation procedure.",
+    "route": "BOTH",
+    "subtype": "revaluation",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1601' AND c.course_name='Formal Languages and Automata Theory';",
+    "gold_rag_source": "documents/academic_regulations.md #5 Revaluation",
+    "gold_answer": "SQL: [[78]] | RULE: Apply within 7 days of result declaration with per-course fee; better marks retained."
+  },
+  {
+    "query_id": "Q325",
+    "question": "Explain the CPU scheduling algorithms FCFS, SJF and Round Robin.",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "arrival order, shortest burst, time quantum"
+  },
+  {
+    "query_id": "Q326",
+    "question": "What is hallucination in large language models?",
+    "route": "RAG",
+    "subtype": "AI",
+    "gold_sql": "",
+    "gold_rag_source": "KB: AI",
+    "gold_answer": "fluent but unsupported output"
+  },
+  {
+    "query_id": "Q327",
+    "question": "Hi, show the Chemical Engineering (CHE) students in year 3.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-department",
+    "gold_sql": "SELECT student_id FROM students WHERE department='CHE';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q328",
+    "question": "Please tell me: what are the marks of 25BQ1A3722?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM marks WHERE student_id='25BQ1A3722';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q329",
+    "question": "Quick question - what grade does 23BQ1A1414 receive in Wireless Communications according to the grading scheme?",
+    "route": "BOTH",
+    "subtype": "grading",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1414' AND c.course_name='Wireless Communications';",
+    "gold_rag_source": "documents/academic_regulations.md #3 Grading scheme",
+    "gold_answer": "SQL: [[30]] | RULE: O 90+, A+ 80-89, A 70-79, B+ 60-69, B 50-59, C 40-49, F <40."
+  },
+  {
+    "query_id": "Q330",
+    "question": "Which phone is best under 20000 rupees?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "shopping-tech",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q331",
+    "question": "Show the overall attendance for roll number 23BQ1A2688.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM attendance WHERE student_id='23BQ1A2688';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q332",
+    "question": "Quick question - in which course is 25BQ1A0862's attendance the lowest, and can that shortage be condoned?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A0862' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[\"Microprocessors\", 78.4]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q333",
+    "question": "What should I eat before a workout?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "lifestyle",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q334",
+    "question": "Where can I buy a cheap laptop?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "shopping-tech",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q335",
+    "question": "Write a poem about the monsoon.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "general-chat",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q336",
+    "question": "Hi, list the courses offered in CSM semester 2.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-semester",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='CSM' AND semester=2;",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q337",
+    "question": "Help me write a love letter to my friend.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "personal-misc",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q338",
+    "question": "23BQ1A0181 is short of attendance in Big Data Analytics. What is the condonation process?",
+    "route": "BOTH",
+    "subtype": "attendance-shortage",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A0181' AND c.course_name='Big Data Analytics';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[56.6]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q339",
+    "question": "How does DNS work?",
+    "route": "RAG",
+    "subtype": "Networks",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Networks",
+    "gold_answer": "domain name to IP resolution hierarchy"
+  },
+  {
+    "query_id": "Q340",
+    "question": "Show the marks of student 26BQ1A5407.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM marks WHERE student_id='26BQ1A5407';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q341",
+    "question": "Did 24BQ1A1502 pass Cloud Computing? Also explain the passing criteria.",
+    "route": "BOTH",
+    "subtype": "pass-fail",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1502' AND c.course_name='Cloud Computing';",
+    "gold_rag_source": "documents/academic_regulations.md #2 Passing criteria",
+    "gold_answer": "SQL: [[74]] | RULE: Pass mark is 40/100."
+  },
+  {
+    "query_id": "Q342",
+    "question": "Hi, 25BQ1A0127 is unhappy with the Computer Architecture result. Show the marks and explain the revaluation procedure.",
+    "route": "BOTH",
+    "subtype": "revaluation",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A0127' AND c.course_name='Computer Architecture';",
+    "gold_rag_source": "documents/academic_regulations.md #5 Revaluation",
+    "gold_answer": "SQL: [[62]] | RULE: Apply within 7 days of result declaration with per-course fee; better marks retained."
+  },
+  {
+    "query_id": "Q343",
+    "question": "Quick question - which courses has student 24BQ1A1453 failed?",
+    "route": "SQL",
+    "subtype": "marks-filter",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1453' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"VLSI Design\", 31], [\"Digital Communications\", 25], [\"Antennas and Wave Propagation\", 37]]"
+  },
+  {
+    "query_id": "Q344",
+    "question": "Which student topped Discrete Structures?",
+    "route": "SQL",
+    "subtype": "topper",
+    "gold_sql": "SELECT m.student_id, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Discrete Structures' ORDER BY m.marks_obtained DESC, m.student_id LIMIT 1;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"25BQ1A1508\", 100]]"
+  },
+  {
+    "query_id": "Q345",
+    "question": "Quick question - show 24BQ1A1986's marks in Satellite Communications.",
+    "route": "NOT-FOUND",
+    "subtype": "not-enrolled",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1986' AND c.course_name='Satellite Communications';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q346",
+    "question": "Give me the latest Olympics medal tally.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "sports",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q347",
+    "question": "What are triggers in SQL?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "automatic procedures fired on insert/update/delete"
+  },
+  {
+    "query_id": "Q348",
+    "question": "What is your favourite colour?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "general-chat",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q349",
+    "question": "What is dynamic programming?",
+    "route": "RAG",
+    "subtype": "DSA",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DSA",
+    "gold_answer": "overlapping subproblems and memoization"
+  },
+  {
+    "query_id": "Q350",
+    "question": "What is gradient descent?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "iterative loss minimization along negative gradient"
+  },
+  {
+    "query_id": "Q351",
+    "question": "Who is the best footballer of all time?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "sports",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q352",
+    "question": "Please tell me: what is the attendance of 26BQ1A5191?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM attendance WHERE student_id='26BQ1A5191';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q353",
+    "question": "Why do I have attendance shortage in Cloud Computing? Roll number 24BQ1A0623. What can I do about it?",
+    "route": "BOTH",
+    "subtype": "attendance-shortage",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='24BQ1A0623' AND c.course_name='Cloud Computing';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[69.2]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q354",
+    "question": "Hi, how many students are in section C of CSE year 2?",
+    "route": "SQL",
+    "subtype": "count-students",
+    "gold_sql": "SELECT COUNT(*) FROM students WHERE department='CSE' AND year=2 AND section='C';",
+    "gold_rag_source": "",
+    "gold_answer": "[[53]]"
+  },
+  {
+    "query_id": "Q355",
+    "question": "List the courses offered in CSE semester 5.",
+    "route": "SQL",
+    "subtype": "course-list",
+    "gold_sql": "SELECT course_name FROM courses WHERE department='CSE' AND semester=5 ORDER BY course_id;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"Web Technologies\"], [\"Compiler Design\"], [\"Information Security\"], [\"Cloud Computing\"], [\"Mobile Application Development\"]]"
+  },
+  {
+    "query_id": "Q356",
+    "question": "Which stock should I buy today?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "finance",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q357",
+    "question": "What is the roll number of Manbir Ahluwalia?",
+    "route": "SQL",
+    "subtype": "name-lookup",
+    "gold_sql": "SELECT student_id FROM students WHERE name='Manbir Ahluwalia';",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"26BQ1A0192\"]]"
+  },
+  {
+    "query_id": "Q358",
+    "question": "How do I fix my WiFi router?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "shopping-tech",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q359",
+    "question": "Is 24BQ1A0211 eligible for promotion to the next year? Check overall attendance and the promotion rule.",
+    "route": "BOTH",
+    "subtype": "promotion",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='24BQ1A0211';",
+    "gold_rag_source": "documents/academic_regulations.md #6 Promotion",
+    "gold_answer": "SQL: [[87.1]] | RULE: Promotion needs overall attendance >=75% (or condoned) and <=4 backlogs."
+  },
+  {
+    "query_id": "Q360",
+    "question": "How does the k-means clustering algorithm work?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "assign to nearest centroid, update centroids"
+  },
+  {
+    "query_id": "Q361",
+    "question": "Explain exception handling using try, catch and finally in Java.",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "try block, catch handles, finally always runs"
+  },
+  {
+    "query_id": "Q362",
+    "question": "Please tell me: in which course is 23BQ1A1995's attendance the lowest, and can that shortage be condoned?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='23BQ1A1995' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[\"Distributed Systems\", 77.3]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q363",
+    "question": "Please tell me: is 25BQ1A0606 eligible for promotion to the next year? Check overall attendance and the promotion rule.",
+    "route": "BOTH",
+    "subtype": "promotion",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='25BQ1A0606';",
+    "gold_rag_source": "documents/academic_regulations.md #6 Promotion",
+    "gold_answer": "SQL: [[83.1]] | RULE: Promotion needs overall attendance >=75% (or condoned) and <=4 backlogs."
+  },
+  {
+    "query_id": "Q364",
+    "question": "In which course is 26BQ1A1305's attendance the lowest, and can that shortage be condoned?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='26BQ1A1305' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[\"C Programming\", 48.3]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q365",
+    "question": "Hi, show the overall attendance for roll number 25BQ1A5810.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM attendance WHERE student_id='25BQ1A5810';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q366",
+    "question": "Is 26BQ1A1467 eligible for promotion to the next year? Check overall attendance and the promotion rule.",
+    "route": "BOTH",
+    "subtype": "promotion",
+    "gold_sql": "SELECT ROUND(100.0*SUM(attended_classes)/SUM(total_classes),1) AS overall_attendance_pct FROM attendance WHERE student_id='26BQ1A1467';",
+    "gold_rag_source": "documents/academic_regulations.md #6 Promotion",
+    "gold_answer": "SQL: [[88.5]] | RULE: Promotion needs overall attendance >=75% (or condoned) and <=4 backlogs."
+  },
+  {
+    "query_id": "Q367",
+    "question": "When is the next India vs Australia match?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "sports",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q368",
+    "question": "Add up all the marks of student 24BQ1A0438.",
+    "route": "SQL",
+    "subtype": "marks-aggregate",
+    "gold_sql": "SELECT SUM(marks_obtained) FROM marks WHERE student_id='24BQ1A0438';",
+    "gold_rag_source": "",
+    "gold_answer": "[[196]]"
+  },
+  {
+    "query_id": "Q369",
+    "question": "Can 24BQ1A0623 appear for the Mobile Application Development semester exam given the attendance?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='24BQ1A0623' AND c.course_name='Mobile Application Development';",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[98.3]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q370",
+    "question": "Who is the highest-paid actor in India?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "entertainment",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q371",
+    "question": "What are the credits for Blockchain Technology?",
+    "route": "SQL",
+    "subtype": "course-info",
+    "gold_sql": "SELECT credits FROM courses WHERE course_name='Blockchain Technology';",
+    "gold_rag_source": "",
+    "gold_answer": "[[3]]"
+  },
+  {
+    "query_id": "Q372",
+    "question": "Quick question - 23BQ1A1014 is unhappy with the Radar Systems result. Show the marks and explain the revaluation procedure.",
+    "route": "BOTH",
+    "subtype": "revaluation",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1014' AND c.course_name='Radar Systems';",
+    "gold_rag_source": "documents/academic_regulations.md #5 Revaluation",
+    "gold_answer": "SQL: [[60]] | RULE: Apply within 7 days of result declaration with per-course fee; better marks retained."
+  },
+  {
+    "query_id": "Q373",
+    "question": "Which courses does Venkatesh Prabhu handle?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Venkatesh Prabhu';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q374",
+    "question": "What is thrashing in operating systems?",
+    "route": "RAG",
+    "subtype": "OS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: OS",
+    "gold_answer": "excessive paging reducing performance"
+  },
+  {
+    "query_id": "Q375",
+    "question": "What is the purpose of the final keyword in Java?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "constant variable, non-overridable method, non-inheritable class"
+  },
+  {
+    "query_id": "Q376",
+    "question": "Drop the students table.",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "unsafe-write-or-admin",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q377",
+    "question": "Show 24BQ1A1037's attendance in Veterinary Anatomy.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1037' AND c.course_name='Veterinary Anatomy';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q378",
+    "question": "Did 24BQ1A1813 pass Microwave Engineering? Also explain the passing criteria.",
+    "route": "BOTH",
+    "subtype": "pass-fail",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A1813' AND c.course_name='Microwave Engineering';",
+    "gold_rag_source": "documents/academic_regulations.md #2 Passing criteria",
+    "gold_answer": "SQL: [[40]] | RULE: Pass mark is 40/100."
+  },
+  {
+    "query_id": "Q379",
+    "question": "Which courses does Tarun Bhaskar handle?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-faculty",
+    "gold_sql": "SELECT c.course_name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE f.name='Tarun Bhaskar';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q380",
+    "question": "Hi, 23BQ1A1487 failed Internet of Things. Show the marks and explain how the supplementary exam works.",
+    "route": "BOTH",
+    "subtype": "supplementary",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='23BQ1A1487' AND c.course_name='Internet of Things';",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[37]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q381",
+    "question": "Hi, how many ECE students have overall attendance below 65%?",
+    "route": "SQL",
+    "subtype": "count-shortage",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='ECE' GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "",
+    "gold_answer": "[[38]]"
+  },
+  {
+    "query_id": "Q382",
+    "question": "Quick question - what grade does 24BQ1A0924 receive in Digital Communications according to the grading scheme?",
+    "route": "BOTH",
+    "subtype": "grading",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0924' AND c.course_name='Digital Communications';",
+    "gold_rag_source": "documents/academic_regulations.md #3 Grading scheme",
+    "gold_answer": "SQL: [[86]] | RULE: O 90+, A+ 80-89, A 70-79, B+ 60-69, B 50-59, C 40-49, F <40."
+  },
+  {
+    "query_id": "Q383",
+    "question": "Please tell me: in which course is 25BQ1A1843's attendance the lowest, and can that shortage be condoned?",
+    "route": "BOTH",
+    "subtype": "attendance-eligibility",
+    "gold_sql": "SELECT c.course_name, ROUND(100.0*a.attended_classes/a.total_classes,1) AS attendance_pct FROM attendance a JOIN courses c ON c.course_id=a.course_id WHERE a.student_id='25BQ1A1843' ORDER BY attendance_pct ASC, c.course_id LIMIT 1;",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[\"Java Programming\", 73.1]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q384",
+    "question": "Hi, how many ECE year 2 students have overall attendance below 65%, and what action does the college take on them?",
+    "route": "BOTH",
+    "subtype": "attendance-detention",
+    "gold_sql": "SELECT COUNT(*) FROM (SELECT a.student_id FROM attendance a JOIN students s ON s.student_id=a.student_id WHERE s.department='ECE' AND s.year=2 GROUP BY a.student_id HAVING 100.0*SUM(a.attended_classes)/SUM(a.total_classes)<65);",
+    "gold_rag_source": "documents/academic_regulations.md #1 Attendance",
+    "gold_answer": "SQL: [[9]] | RULE: Min 75% attendance per course for exam eligibility; 65-74.9% condonable with fee/valid grounds; <65% detained."
+  },
+  {
+    "query_id": "Q385",
+    "question": "How does method overloading differ from method overriding?",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "overload=same name diff params compile-time; override=subclass redefines runtime"
+  },
+  {
+    "query_id": "Q386",
+    "question": "Explain the OSI model and its seven layers.",
+    "route": "RAG",
+    "subtype": "Networks",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Networks",
+    "gold_answer": "physical to application layers"
+  },
+  {
+    "query_id": "Q387",
+    "question": "Quick question - list the students of the Chemical Engineering (CHE) department.",
+    "route": "NOT-FOUND",
+    "subtype": "missing-department",
+    "gold_sql": "SELECT student_id FROM students WHERE department='CHE';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q388",
+    "question": "Show 25BQ1A1377's marks in Compiler Design.",
+    "route": "NOT-FOUND",
+    "subtype": "not-enrolled",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='25BQ1A1377' AND c.course_name='Compiler Design';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q389",
+    "question": "Who won the last IPL final?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "sports",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q390",
+    "question": "Is it safe to take painkillers every day?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "medical",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q391",
+    "question": "Explain the static keyword in Java.",
+    "route": "RAG",
+    "subtype": "Java",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Java",
+    "gold_answer": "class-level members shared across instances"
+  },
+  {
+    "query_id": "Q392",
+    "question": "Which courses has 24BQ1A0353 failed, and how can the student clear them?",
+    "route": "BOTH",
+    "subtype": "backlog",
+    "gold_sql": "SELECT c.course_name, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='24BQ1A0353' AND m.marks_obtained<40 ORDER BY c.course_id;",
+    "gold_rag_source": "documents/academic_regulations.md #4 Supplementary",
+    "gold_answer": "SQL: [[\"Computer Networks\", 33], [\"Formal Languages and Automata Theory\", 33]] | RULE: Failed courses are cleared via supplementary exams after regular results, with fee."
+  },
+  {
+    "query_id": "Q393",
+    "question": "What is a deadlock in a database system?",
+    "route": "RAG",
+    "subtype": "DBMS",
+    "gold_sql": "",
+    "gold_rag_source": "KB: DBMS",
+    "gold_answer": "transactions waiting on each other's locks"
+  },
+  {
+    "query_id": "Q394",
+    "question": "Should I invest in mutual funds?",
+    "route": "OUT-OF-SCOPE",
+    "subtype": "finance",
+    "gold_sql": "",
+    "gold_rag_source": "",
+    "gold_answer": "Outside supported scope. The assistant should politely decline and state what it can help with."
+  },
+  {
+    "query_id": "Q395",
+    "question": "What is the difference between TCP and UDP?",
+    "route": "RAG",
+    "subtype": "Networks",
+    "gold_sql": "",
+    "gold_rag_source": "KB: Networks",
+    "gold_answer": "reliable connection-oriented vs fast connectionless"
+  },
+  {
+    "query_id": "Q396",
+    "question": "List the top 5 scorers in Engineering Chemistry.",
+    "route": "SQL",
+    "subtype": "top-n",
+    "gold_sql": "SELECT m.student_id, m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE c.course_name='Engineering Chemistry' ORDER BY m.marks_obtained DESC, m.student_id LIMIT 5;",
+    "gold_rag_source": "",
+    "gold_answer": "[[\"26BQ1A0655\", 99], [\"26BQ1A1353\", 96], [\"26BQ1A0405\", 91], [\"26BQ1A1829\", 89], [\"26BQ1A0010\", 88]]"
+  },
+  {
+    "query_id": "Q397",
+    "question": "Which semester is Astrophysics offered in?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-course",
+    "gold_sql": "SELECT f.name FROM courses c JOIN faculty f ON f.faculty_id=c.faculty_id WHERE c.course_name='Astrophysics';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  },
+  {
+    "query_id": "Q398",
+    "question": "My roll number is 26BQ1A0434. What did I get in Engineering Physics?",
+    "route": "SQL",
+    "subtype": "marks-lookup",
+    "gold_sql": "SELECT m.marks_obtained FROM marks m JOIN courses c ON c.course_id=m.course_id WHERE m.student_id='26BQ1A0434' AND c.course_name='Engineering Physics';",
+    "gold_rag_source": "",
+    "gold_answer": "[[59]]"
+  },
+  {
+    "query_id": "Q399",
+    "question": "What is cross-validation?",
+    "route": "RAG",
+    "subtype": "ML",
+    "gold_sql": "",
+    "gold_rag_source": "KB: ML",
+    "gold_answer": "k-fold evaluation on rotating splits"
+  },
+  {
+    "query_id": "Q400",
+    "question": "What is the attendance of 23BQ1A8523?",
+    "route": "NOT-FOUND",
+    "subtype": "missing-student",
+    "gold_sql": "SELECT * FROM attendance WHERE student_id='23BQ1A8523';",
+    "gold_rag_source": "",
+    "gold_answer": "No matching record found. The assistant must say so and must not fabricate data."
+  }
+]
